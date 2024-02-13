@@ -32,7 +32,7 @@ CREATE TABLE `elementos` (
   `tipo_elemento` enum('electronico','didactico','mueble','utiles') NOT NULL,
   `estado` enum('funcional','reparacion','dañado','') NOT NULL,
   `fecha_ingreso` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -45,7 +45,7 @@ CREATE TABLE `inventario` (
   `nombre_inv` varchar(60) NOT NULL,
   `fecha_creacion` date NOT NULL,
   `fk_id_elementos` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@ CREATE TABLE `novedades` (
   `novedad` text NOT NULL,
   `tipo_nov` enum('daño','perdida','fallas','') NOT NULL,
   `fk_prestamo` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ CREATE TABLE `prestamos` (
   `fecha_pres` date NOT NULL,
   `fk_sitio` int NOT NULL,
   `fk_usuario` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -87,7 +87,7 @@ CREATE TABLE `sitios` (
   `nombre_sitio` varchar(60) NOT NULL,
   `tipo_sitio` enum('ambiente','biblioteca','auditorio','agronegocios') NOT NULL,
   `fk_id_inventario` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -104,7 +104,7 @@ CREATE TABLE `usuarios` (
   `identificacion_dni` varchar(20) NOT NULL,
   `contraseña` varchar(50) NOT NULL,
   `estado_usuario` enum('activo','inactivo') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Índices para tablas volcadas
