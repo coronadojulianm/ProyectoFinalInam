@@ -1,0 +1,20 @@
+body{
+    background-color: aqua;
+}
+table{
+    border-collapse: collapse;
+    background-color: rgb(25, 199, 243);
+}
+td{
+    height: 28px;
+    border: 1px solid black;
+    padding: 3px 8px;
+}
+.cont-f{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.side2{
+    width: 310px;
+}

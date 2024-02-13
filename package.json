@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "dotenv": "^16.4.1",
+    "dotenv": "^16.4.4",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.1",
@@ -9,8 +9,9 @@
   "name": "proyectoformativoinam",
   "version": "1.0.0",
   "main": "app.js",
-  "devDependencies": {},
+  "type": "module",
   "scripts": {
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

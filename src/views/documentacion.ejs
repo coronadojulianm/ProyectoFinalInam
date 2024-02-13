@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>hola</h1>
+    <br>
+    <div class="cont-f">
+        <div>
+            <h3>Registrar usuario</h3>
+            <table>
+                <tr><td class="sly-t">Numero</td><td class="side2">1</td></tr>
+                <tr><td class="sly-t">Nombre endpoint</td><td class="side2">Registrar usuarios</td></tr>
+                <tr><td class="sly-t">URI</td><td class="side2">localhost3000/usuario/registrar</td></tr>
+                <tr><td class="sly-t">Descripción</td><td class="side2">Endpoint para registrar un usuario en la base de datos</td></tr>
+                <tr><td class="sly-t">Verbo HTTP</td><td class="side2">POST</td></tr>
+                <tr><td class="sly-t">Header</td><td class="side2">Content-type: JSON</td></tr>
+                <tr><td class="sly-t">Usuarios</td><td class="side2">(Administrador, usuario)</td></tr>
+                <tr><td class="sly-t">Request JSON</td><td>
+                    {<br>
+                    "idusuario": 1,<br>
+                    "nombres": "luis",<br>
+                    "direccion": "cr 1",<br>
+                    "telefono": "3132898323",<br>
+                    "correo": "luis@gmail.com",<br>
+                    "rol": "administrador",<br>
+                    "password": "12345"<br>
+                  }</td></tr>
+                <tr><td class="sly-t">Response</td><td>
+                    <div class="rect">Correcto:</div>
+                    "status": "200"<br>
+                    Body :{<br>
+                    "message:"Se registro con exito el usuario"<br>
+                    }
+                    <div class="rect">Incorrecto</div>
+                    "status": "403"<br>
+                    Body :{<br>
+                    "message: "Usuario no registrado"<br>
+                    }
+                </td></tr>
+            </table>
+        </div>
+        <div>
+            <h3>Listar Usuario</h3>
+            <table>
+                <tr><td class="sly-t">Numero</td><td class="side2">1</td></tr>
+                <tr><td class="sly-t">Nombre endpoint</td><td class="side2">Listar usuarios</td></tr>
+                <tr><td class="sly-t">URI</td><td class="side2">localhost3000/usuario/listar</td></tr>
+                <tr><td class="sly-t">Descripción</td><td class="side2">Endpoint para listar a los usuarios de la base de datos</td></tr>
+                <tr><td class="sly-t">Verbo HTTP</td><td class="side2">GET</td></tr>
+                <tr><td class="sly-t">Header</td><td class="side2">Content-type: JSON</td></tr>
+                <tr><td class="sly-t">Usuarios</td><td class="side2">Administrador,)</td></tr>
+                <tr><td class="sly-t">Request JSON</td><td>
+                    {}</td></tr>
+                <tr><td class="sly-t">Response</td><td>
+                    <div class="rect">Correcto:</div>
+                    "status": "200"<br>
+                    Body :{<br>
+                    "result"<br>
+                    }
+                    <div class="rect">Incorrecto</div>
+                    "status": "403"<br>
+                    Body :{<br>
+                    "message:"No se econtró usuarios"<br>
+                    }
+                </td></tr>
+            </table>
+        </div>
+        <div>
+            <h3>Eliminar usuario</h3>
+            <table>
+                <tr><td class="sly-t">Numero</td><td class="side2">1</td></tr>
+                <tr><td class="sly-t">Nombre endpoint</td><td class="side2">Eliminar usuarios</td></tr>
+                <tr><td class="sly-t">URI</td><td class="side2">localhost3000/usuario/eliminar</td></tr>
+                <tr><td class="sly-t">Descripción</td><td class="side2">Endpoint para eliminar un usuario de la base de datos</td></tr>
+                <tr><td class="sly-t">Verbo HTTP</td><td class="side2">Delete</td></tr>
+                <tr><td class="sly-t">Header</td><td class="side2">Content-type: JSON</td></tr>
+                <tr><td class="sly-t">Usuarios</td><td class="side2">(Administrador, usuario)</td></tr>
+                <tr><td class="sly-t">Request JSON</td><td>
+                    {}</td></tr>
+                <tr><td class="sly-t">Response</td><td>
+                    <div class="rect">Correcto:</div>
+                    "status": "200"<br>
+                    Body :{<br>
+                    "message:"Usuario eliminado con exito"<br>
+                    }
+                    <div class="rect">Incorrecto</div>
+                    "status": "403"<br>
+                    Body :{<br>
+                    "message:"message": "Usuario no eliminado"<br>
+                    }
+                </td></tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
