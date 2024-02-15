@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Servidor: localhost:3306
--- Tiempo de generación: 13-02-2024 a las 13:03:53
--- Versión del servidor: 8.0.30
--- Versión de PHP: 8.1.10
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 14-02-2024 a las 19:25:46
+-- Versión del servidor: 10.4.27-MariaDB
+-- Versión de PHP: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,11 +28,18 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `elementos` (
-  `id_elemento` int NOT NULL,
+  `id_elemento` int(11) NOT NULL,
   `tipo_elemento` enum('electronico','didactico','mueble','utiles') NOT NULL,
   `estado` enum('funcional','reparacion','dañado','') NOT NULL,
   `fecha_ingreso` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `elementos`
+--
+
+INSERT INTO `elementos` (`id_elemento`, `tipo_elemento`, `estado`, `fecha_ingreso`) VALUES
+(1, '', '', '2024-06-15');
 
 -- --------------------------------------------------------
 
@@ -41,11 +48,18 @@ CREATE TABLE `elementos` (
 --
 
 CREATE TABLE `inventario` (
-  `id_inventario` int NOT NULL,
+  `id_inventario` int(11) NOT NULL,
   `nombre_inv` varchar(60) NOT NULL,
   `fecha_creacion` date NOT NULL,
-  `fk_id_elementos` int NOT NULL
+  `fk_id_elementos` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inventario`
+--
+
+INSERT INTO `inventario` (`id_inventario`, `nombre_inv`, `fecha_creacion`, `fk_id_elementos`) VALUES
+(1, 'inventario 1', '2024-06-15', 1);
 
 -- --------------------------------------------------------
 
@@ -54,13 +68,20 @@ CREATE TABLE `inventario` (
 --
 
 CREATE TABLE `novedades` (
-  `id_novedad` int NOT NULL,
+  `id_novedad` int(11) NOT NULL,
   `fecha_nov` date NOT NULL,
-  `fk_id_usuario` int NOT NULL,
+  `fk_id_usuario` int(11) NOT NULL,
   `novedad` text NOT NULL,
   `tipo_nov` enum('daño','perdida','fallas','') NOT NULL,
-  `fk_prestamo` int NOT NULL
+  `fk_prestamo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `novedades`
+--
+
+INSERT INTO `novedades` (`id_novedad`, `fecha_nov`, `fk_id_usuario`, `novedad`, `tipo_nov`, `fk_prestamo`) VALUES
+(2, '2024-05-18', 2, '1', 'daño', 4);
 
 -- --------------------------------------------------------
 
@@ -69,12 +90,19 @@ CREATE TABLE `novedades` (
 --
 
 CREATE TABLE `prestamos` (
-  `id_prestamo` int NOT NULL,
+  `id_prestamo` int(11) NOT NULL,
   `estado` enum('disponible','ocupado','inaccesible','') NOT NULL,
   `fecha_pres` date NOT NULL,
-  `fk_sitio` int NOT NULL,
-  `fk_usuario` int NOT NULL
+  `fk_sitio` int(11) NOT NULL,
+  `fk_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prestamos`
+--
+
+INSERT INTO `prestamos` (`id_prestamo`, `estado`, `fecha_pres`, `fk_sitio`, `fk_usuario`) VALUES
+(4, 'disponible', '2024-03-13', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -83,11 +111,18 @@ CREATE TABLE `prestamos` (
 --
 
 CREATE TABLE `sitios` (
-  `id_sitio` int NOT NULL,
+  `id_sitio` int(11) NOT NULL,
   `nombre_sitio` varchar(60) NOT NULL,
   `tipo_sitio` enum('ambiente','biblioteca','auditorio','agronegocios') NOT NULL,
-  `fk_id_inventario` int NOT NULL
+  `fk_id_inventario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `sitios`
+--
+
+INSERT INTO `sitios` (`id_sitio`, `nombre_sitio`, `tipo_sitio`, `fk_id_inventario`) VALUES
+(1, 'Y!', 'ambiente', 1);
 
 -- --------------------------------------------------------
 
@@ -96,7 +131,7 @@ CREATE TABLE `sitios` (
 --
 
 CREATE TABLE `usuarios` (
-  `id_usuario` int NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `tipo_usuario` enum('administrador','celador','instructor','') NOT NULL,
   `nombre` varchar(60) NOT NULL,
   `correo` varchar(60) NOT NULL,
@@ -105,6 +140,13 @@ CREATE TABLE `usuarios` (
   `contraseña` varchar(50) NOT NULL,
   `estado_usuario` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `tipo_usuario`, `nombre`, `correo`, `telefono`, `identificacion_dni`, `contraseña`, `estado_usuario`) VALUES
+(2, 'instructor', 'Wilson', 'wil@instructor.com', '3022222222', '1234', '123', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -160,37 +202,37 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `elementos`
 --
 ALTER TABLE `elementos`
-  MODIFY `id_elemento` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_elemento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `inventario`
 --
 ALTER TABLE `inventario`
-  MODIFY `id_inventario` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_inventario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `novedades`
 --
 ALTER TABLE `novedades`
-  MODIFY `id_novedad` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_novedad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  MODIFY `id_prestamo` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_prestamo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `sitios`
 --
 ALTER TABLE `sitios`
-  MODIFY `id_sitio` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sitio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -206,13 +248,13 @@ ALTER TABLE `inventario`
 -- Filtros para la tabla `novedades`
 --
 ALTER TABLE `novedades`
+  ADD CONSTRAINT `novedades` FOREIGN KEY (`fk_prestamo`) REFERENCES `prestamos` (`id_prestamo`),
   ADD CONSTRAINT `novedades_ibfk_1` FOREIGN KEY (`fk_id_usuario`) REFERENCES `usuarios` (`id_usuario`);
 
 --
 -- Filtros para la tabla `prestamos`
 --
 ALTER TABLE `prestamos`
-  ADD CONSTRAINT `prestamos_ibfk_1` FOREIGN KEY (`id_prestamo`) REFERENCES `novedades` (`fk_prestamo`),
   ADD CONSTRAINT `prestamos_ibfk_2` FOREIGN KEY (`fk_usuario`) REFERENCES `usuarios` (`id_usuario`),
   ADD CONSTRAINT `prestamos_ibfk_3` FOREIGN KEY (`fk_sitio`) REFERENCES `sitios` (`id_sitio`);
 

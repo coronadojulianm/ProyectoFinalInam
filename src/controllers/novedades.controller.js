@@ -8,8 +8,8 @@ export const listarNovedad = async(req,res)=> {
 
 export const registrarNovedad = async(req,res)=> {
     try{
-        let {fecha_nov,fk_id_usuario,novedad,tipo_nov,fk_id_prestamo} = req.body;
-        let sql = `insert into novedades (fecha_nov,fk_id_usuario,novedad,tipo_nov,fk_id_prestamo) values('${fecha_nov}','${fk_id_usuario}','${novedad}','${tipo_nov}','${fk_id_prestamo}')`;
+        let {fecha_nov,fk_id_usuario,novedad,tipo_nov,fk_prestamo} = req.body;
+        let sql = `insert into novedades (fecha_nov,fk_id_usuario,novedad,tipo_nov,fk_prestamo) values('${fecha_nov}','${fk_id_usuario}','${novedad}','${tipo_nov}','${fk_prestamo}')`;
     
         let [rows] = await pool.query(sql);
 
@@ -42,14 +42,14 @@ export const eliminarNovedad = async (req,res)=>{
 export const actualizarNovedad = async (req,res)=> {
     try{
         let id = req.params.id;
-        let {fecha_nov, fk_id_usuario, novedad, tipo_nov,fk_id_prestamo} = req.body;
+        let {fecha_nov, fk_id_usuario, novedad, tipo_nov,fk_prestamo} = req.body;
         let sql = `UPDATE novedades SET fecha_nov = ?,
                                     fk_id_usuario = ?,
                                     novedad = ?,
                                     tipo_nov = ?,
-                                    fk_id_prestamo = ?
+                                    fk_prestamo = ?
                                     WHERE id_novedad = ?`;
-        let [rows] = await pool.query(sql, [fecha_nov, fk_id_usuario, novedad, tipo_nov, fk_id_prestamo, id]);
+        let [rows] = await pool.query(sql, [fecha_nov, fk_id_usuario, novedad, tipo_nov, fk_prestamo, id]);
         if(rows.affectedRows>0){
             return res.status(200).json({"message": "Novedad actualizada con exito"})
         }else{
