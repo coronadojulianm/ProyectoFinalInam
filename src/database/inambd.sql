@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 03-03-2024 a las 16:54:51
+-- Tiempo de generación: 03-03-2024 a las 19:00:08
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -34,6 +34,13 @@ CREATE TABLE `ambientes` (
   `fk_area` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `ambientes`
+--
+
+INSERT INTO `ambientes` (`id_ambiente`, `nombre_ambiente`, `estado_ambiente`, `fk_area`) VALUES
+(1, 'Y12', 'libre', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -45,6 +52,13 @@ CREATE TABLE `areas` (
   `nombre_area` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `estado` enum('ocupado','libre','inaccesible','') COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `areas`
+--
+
+INSERT INTO `areas` (`id_area`, `nombre_area`, `estado`) VALUES
+(1, 'Tics', 'libre');
 
 -- --------------------------------------------------------
 
@@ -63,6 +77,13 @@ CREATE TABLE `elementos` (
   `fk_ambiente` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `elementos`
+--
+
+INSERT INTO `elementos` (`id_elementos`, `codigo_sena`, `estado`, `nombre_elemento`, `tipo_elemento`, `nota_cambio`, `cambios`, `fk_ambiente`) VALUES
+(1, 12312321, 'dañado', 'PC_HP', 'tecnologia', NULL, NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -77,6 +98,13 @@ CREATE TABLE `novedad` (
   `fecha_novedad` date NOT NULL,
   `fk_id_prestamo` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `novedad`
+--
+
+INSERT INTO `novedad` (`id_novedad`, `tipo_novedad`, `descripcion_novedad`, `responsable_registro`, `fecha_novedad`, `fk_id_prestamo`) VALUES
+(3, 'Daño PC Registro 1 actualizado', 'La pantalla no enciende (prueba) ', 'carlos cela', '2024-02-01', 1);
 
 -- --------------------------------------------------------
 
@@ -95,6 +123,13 @@ CREATE TABLE `prestamo` (
   `fk_ambiente` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `prestamo`
+--
+
+INSERT INTO `prestamo` (`id_prestamo`, `nombre_ambiente`, `fecha_prestamo`, `fecha_entrega`, `nombre_celador`, `observaciones`, `fk_usuario`, `fk_ambiente`) VALUES
+(1, 'Y12', '2024-03-05', '2024-03-04', 'carlos', 'ninguna', 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -107,8 +142,16 @@ CREATE TABLE `usuario` (
   `telefono` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `correo` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `contraseña` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `tipo_usuario` enum('celador','administrador','instructor') COLLATE utf8mb4_general_ci NOT NULL
+  `tipo_usuario` enum('celador','administrador','instructor') COLLATE utf8mb4_general_ci NOT NULL,
+  `estado_usuario` enum('activo','inactivo') COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id_usuario`, `identificacion`, `telefono`, `correo`, `contraseña`, `tipo_usuario`, `estado_usuario`) VALUES
+(1, 1117486332, '321412312123', 'julian@gmail.com', '123', 'celador', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -163,37 +206,37 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `ambientes`
 --
 ALTER TABLE `ambientes`
-  MODIFY `id_ambiente` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_ambiente` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `areas`
 --
 ALTER TABLE `areas`
-  MODIFY `id_area` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_area` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `elementos`
 --
 ALTER TABLE `elementos`
-  MODIFY `id_elementos` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_elementos` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `novedad`
 --
 ALTER TABLE `novedad`
-  MODIFY `id_novedad` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_novedad` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `prestamo`
 --
 ALTER TABLE `prestamo`
-  MODIFY `id_prestamo` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_prestamo` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id_usuario` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
