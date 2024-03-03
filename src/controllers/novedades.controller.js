@@ -2,14 +2,14 @@ import { pool } from '../database/conexion.js';
 
 export const listarNovedad = async(req,res)=> {
 
-    const [result] = await pool.query('select * from novedades');
+    const [result] = await pool.query('select * from novedad');
     res.status(200).json(result);
 };
 
 export const registrarNovedad = async(req,res)=> {
     try{
-        let {fecha_nov,fk_id_usuario,novedad,tipo_nov,fk_prestamo} = req.body;
-        let sql = `insert into novedades (fecha_nov,fk_id_usuario,novedad,tipo_nov,fk_prestamo) values('${fecha_nov}','${fk_id_usuario}','${novedad}','${tipo_nov}','${fk_prestamo}')`;
+        let {tipo_novedad,descripcion_novedad,responsable_registro,fecha_novedad,fk_id_prestamo} = req.body;
+        let sql = `insert into novedad (tipo_novedad,descripcion_novedad,responsable_registro,fecha_novedad,fk_id_prestamo) values('${tipo_novedad}','${descripcion_novedad}','${responsable_registro}','${fecha_novedad}','${fk_id_prestamo}')`;
     
         let [rows] = await pool.query(sql);
 
@@ -26,7 +26,7 @@ export const registrarNovedad = async(req,res)=> {
 export const eliminarNovedad = async (req,res)=>{
     try{
         let id = req.params.id;
-        let sql = `delete from novedades where id_novedad = ${id}`;
+        let sql = `delete from novedad where id_novedad = ${id}`;
         let [rows] = await pool.query(sql);
 
         if(rows.affectedRows>0){
@@ -42,14 +42,14 @@ export const eliminarNovedad = async (req,res)=>{
 export const actualizarNovedad = async (req,res)=> {
     try{
         let id = req.params.id;
-        let {fecha_nov, fk_id_usuario, novedad, tipo_nov,fk_prestamo} = req.body;
-        let sql = `UPDATE novedades SET fecha_nov = ?,
-                                    fk_id_usuario = ?,
-                                    novedad = ?,
-                                    tipo_nov = ?,
-                                    fk_prestamo = ?
+        let {tipo_novedad,descripcion_novedad,responsable_registro,fecha_novedad,fk_id_prestamo} = req.body;
+        let sql = `UPDATE novedad SET tipo_novedad = ?,
+                                    descripcion_novedad = ?,
+                                    responsable_registro = ?,
+                                    fecha_novedad = ?,
+                                    fk_id_prestamo = ?
                                     WHERE id_novedad = ?`;
-        let [rows] = await pool.query(sql, [fecha_nov, fk_id_usuario, novedad, tipo_nov, fk_prestamo, id]);
+        let [rows] = await pool.query(sql, [tipo_novedad,descripcion_novedad,responsable_registro,fecha_novedad,fk_id_prestamo, id]);
         if(rows.affectedRows>0){
             return res.status(200).json({"message": "Novedad actualizada con exito"})
         }else{
@@ -63,7 +63,7 @@ export const actualizarNovedad = async (req,res)=> {
 export const consultarNovedad = async (req,res)=>{
     try{
         let id = req.params.id;
-        let sql = `select * from novedades where id_novedad = ?`;
+        let sql = `select * from novedad where id_novedad = ?`;
         let [rows]=await pool.query(sql, [id]);
         if(rows.length>0){
             return res.status(200).json(rows);
