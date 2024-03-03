@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 
 import novedad from './src/routers/novedades.router.js';
 import elemento from "./src/routers/elementos.router.js";
-import inventario from "./src/routers/inventario.router.js";
+import ambientes from "./src/routers/ambientes.router.js";
 import area from "./src/routers/areas.router.js";
 
 
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/novedad',novedad);
 app.use(usuarioRouter);
 app.use('/elemento', elemento);
-app.use('/inventario', inventario);
+app.use('/ambientes', ambientes);
 app.use('/area', area);
 
 app.listen(PORT, () => {

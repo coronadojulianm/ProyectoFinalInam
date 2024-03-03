@@ -17,8 +17,8 @@ export const listarElementos = async(req,res)=> {
 
 export const registrarElemento = async(req,res)=> {
     try{
-        let {id_elemento,tipo_elemento,estado,fecha_ingreso} = req.body;
-        let sql = `insert into elementos (id_elemento,tipo_elemento,estado,fecha_ingreso) values('${id_elemento}','${tipo_elemento}','${estado}','${fecha_ingreso}')`;
+        let {codigo_sena,estado,nombre_elemento,tipo_elemento,fk_ambiente} = req.body;
+        let sql = `insert into elementos (codigo_sena,estado,nombre_elemento,tipo_elemento,fk_ambiente) values('${codigo_sena}','${estado}','${nombre_elemento}','${tipo_elemento}','${fk_ambiente}')`;
     
         let [rows] = await pool.query(sql);
         if(rows.affectedRows>0){
@@ -36,7 +36,7 @@ export const eliminarElemento = async (req,res)=>{
 
     try{
         let id = req.params.id;
-        let sql = `delete from elementos where id_elemento = ${id}`;
+        let sql = `delete from elementos where codigo_sena = ${id}`;
         let [rows] = await pool.query(sql);
     
         if(rows.affectedRows>0){
@@ -52,12 +52,14 @@ export const eliminarElemento = async (req,res)=>{
 export const actualizarElemento = async (req,res)=>{
     try{
         let id = req.params.id;
-        let {tipo_elemento,estado,fecha_ingreso} = req.body;
-        let sql = `UPDATE elementos SET tipo_elemento = ?,
+        let {codigo_sena,estado,nombre_elemento,tipo_elemento,fk_ambiente} = req.body;
+        let sql = `UPDATE elementos SET codigo_sena = ?,
                                        estado = ?,
-                                       fecha_ingreso = ?
-                                       WHERE id_elemento = ?`;
-        let [rows] = await pool.query(sql, [tipo_elemento, estado, fecha_ingreso, id]);
+                                       nombre_elemento = ?,
+                                       tipo_elemento = ?,
+                                       fk_ambiente = ?
+                                       WHERE codigo_sena = ?`;
+        let [rows] = await pool.query(sql, [codigo_sena,estado,nombre_elemento,tipo_elemento,fk_ambiente,id]);
         if(rows.affectedRows>0){
             return res.status(200).json({"message": "Elemento actualizado con exito"})
         }else{
@@ -71,7 +73,7 @@ export const actualizarElemento = async (req,res)=>{
 export const consultarElemento = async(req, res) => {
     try{
         let id = req.params.id;
-        let sql = `select * from elementos where id_elemento = ?`;
+        let sql = `select * from elementos where codigo_sena = ?`;
         let [rows]=await pool.query(sql, [id]);
         if(rows.length>0){
             return res.status(200).json(rows);
