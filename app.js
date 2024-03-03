@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import novedad from './src/routers/novedades.router.js';
 import elemento from "./src/routers/elementos.router.js";
 import inventario from "./src/routers/inventario.router.js";
-import sitio from "./src/routers/sitios.router.js";
+import area from "./src/routers/areas.router.js";
 
 
 const app = express();
@@ -24,7 +24,7 @@ app.use('/novedad',novedad);
 app.use(usuarioRouter);
 app.use('/elemento', elemento);
 app.use('/inventario', inventario);
-app.use('/sitio', sitio);
+app.use('/area', area);
 
 app.listen(PORT, () => {
   console.log(`Servidor iniciado en http://localhost:${PORT}`);
