@@ -8,8 +8,8 @@ export const listarPrestamo = async(req,res)=> {
 
 export const registrarPrestamos = async(req,res)=> {
     try{
-        let {estado,fecha_pres,fk_sitio,fk_usuario} = req.body;
-        let sql = `insert into prestamos (estado,fecha_pres,fk_sitio,fk_usuario) values('${estado}','${fecha_pres}','${fk_sitio}','${fk_usuario}')`;
+        let {id_prestamo,nombre_ambiente,fecha_prestamo,fecha_entrega,nombre_celador,observaciones,fk_usuario,fk_ambiente} = req.body;
+        let sql = `insert into prestamos (id_prestamo,nombre_ambiente,fecha_prestamo,fecha_entrega,nombre_celador,observaciones,fk_usuario,fk_ambiente) values('${id_prestamo}','${nombre_ambiente}','${fecha_prestamo}','${fecha_entrega}','${nombre_celador}','${observaciones}','${fk_usuario}','${fk_ambiente}')`;
     
         let [rows] = await pool.query(sql);
 
@@ -42,13 +42,16 @@ export const eliminarPrestamos = async (req,res)=>{
 export const actualizarPrestamos = async (req,res)=> {
     try{
         let id = req.params.id;
-        let {estado, fecha_pres, fk_sitio,fk_usuario,} = req.body;
-        let sql = `UPDATE prestamos SET estado = ?,
-                                    fecha_pres = ?,
-                                    fk_sitio = ?,
+        let {nombre_ambiente , fecha_prestamo, fecha_entrega,nombre_celador,observaciones,fk_usuario,fk_ambiente} = req.body;
+        let sql = `UPDATE prestamos SET nombre_ambiente = ?,
+                                    fecha_prestamo = ?,
+                                    fecha_entrega = ?,
+                                    nombre_celador = ?,
+                                    observaciones = ?,
                                     fk_usuario = ?,
+                                    fk_ambiente = ?,
                                     WHERE id_prestamo = ?`;
-        let [rows] = await pool.query(sql, [estado, fecha_pres, fk_sitio,fk_usuario, id]);
+        let [rows] = await pool.query(sql, [nombre_ambiente, fecha_prestamo, fecha_entrega,nombre_celador,observaciones,fk_usuario,fk_ambiente ,id]);
         if(rows.affectedRows>0){
             return res.status(200).json({"message": "prestamo actualizada con exito"})
         }else{
