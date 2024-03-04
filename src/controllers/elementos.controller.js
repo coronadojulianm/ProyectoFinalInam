@@ -15,6 +15,7 @@ export const listarElementos = async(req,res)=> {
         }
 };
 
+
 export const registrarElemento = async(req,res)=> {
     try{
         let {codigo_sena,estado,nombre_elemento,tipo_elemento,fk_ambiente} = req.body;
