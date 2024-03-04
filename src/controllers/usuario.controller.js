@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 // Obtener todos los usuarios
 export const obtenerUsuarios = async (req, res) => {
   try {
-    const [rows] = await pool.query('SELECT * FROM usuarios');
+    const [rows] = await pool.query('SELECT * FROM usuario');
     res.json(rows);
   } catch (error) {
     console.error(error);
@@ -16,7 +16,7 @@ export const obtenerUsuarios = async (req, res) => {
   export const obtenerUsuarioPorId = async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await pool.query('SELECT * FROM usuarios WHERE id_usuario = ?', [id]);
+    const [rows] = await pool.query('SELECT * FROM usuario WHERE id_usuario = ?', [id]);
 
     if (rows.length > 0) {
       res.json(rows[0]);
@@ -34,13 +34,13 @@ export const crearUsuario = async (req, res) => {
   const nuevoUsuario = req.body;
   try {
     const [result] = await pool.query(
-      'INSERT INTO usuarios (tipo_usuario, nombre, correo, telefono, identificacion_dni, contraseña, estado_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO usuario (tipo_usuario, nombre, correo, telefono, identificacion, contraseña, estado_usuario) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [
         nuevoUsuario.tipo_usuario,
         nuevoUsuario.nombre,
         nuevoUsuario.correo,
         nuevoUsuario.telefono,
-        nuevoUsuario.identificacion_dni,
+        nuevoUsuario.identificacion,
         nuevoUsuario.contraseña,
         nuevoUsuario.estado_usuario || 'activo',
       ]
@@ -60,13 +60,13 @@ export const crearUsuario = async (req, res) => {
 
   try {
     await pool.query(
-      'UPDATE usuarios SET tipo_usuario = ?, nombre = ?, correo = ?, telefono = ?, identificacion_dni = ?, contraseña = ? WHERE id_usuario = ?',
+      'UPDATE usuario SET tipo_usuario = ?, nombre = ?, correo = ?, telefono = ?, identificacion = ?, contraseña = ? WHERE id_usuario = ?',
       [
         datosUsuario.tipo_usuario,
         datosUsuario.nombre,
         datosUsuario.correo,
         datosUsuario.telefono,
-        datosUsuario.identificacion_dni,
+        datosUsuario.identificacion,
         datosUsuario.contraseña,
         id,
       ]
@@ -84,7 +84,7 @@ export const eliminarUsuario = async (req, res) => {
   const { id } = req.params;
 
   try {
-    await pool.query('DELETE FROM usuarios WHERE id_usuario = ?', [id]);
+    await pool.query('DELETE FROM usuario WHERE id_usuario = ?', [id]);
     res.json({ mensaje: 'Usuario eliminado exitosamente' });
   } catch (error) {
     console.error(error);
@@ -97,7 +97,7 @@ export const validarCredenciales = async (req, res) => {
   const { identificacion, contraseña } = req.body;
 
   try {
-    const [rows] = await pool.query('SELECT * FROM usuarios WHERE identificacion_dni = ? AND contraseña = ?', [identificacion, contraseña]);
+    const [rows] = await pool.query('SELECT * FROM usuario WHERE identificacion = ? AND contraseña = ?', [identificacion, contraseña]);
 
     if (rows.length > 0) {
       // Credenciales válidas, generar token JWT
@@ -124,14 +124,14 @@ export const validarCredenciales = async (req, res) => {
 
   try {
     // Verificar si el usuario existe
-    const [result] = await pool.query('SELECT * FROM usuarios WHERE identificacion_dni = ?', [identificacion]);
+    const [result] = await pool.query('SELECT * FROM usuario WHERE identificacion = ?', [identificacion]);
 
     if (result.length === 0) {
       return res.status(404).json({ mensaje: 'Usuario no encontrado' });
     }
 
     // Actualizar el estado del usuario
-    await pool.query('UPDATE usuarios SET estado_usuario = ? WHERE identificacion_dni = ?', [nuevoEstado, identificacion]);
+    await pool.query('UPDATE usuario SET estado_usuario = ? WHERE identificacion = ?', [nuevoEstado, identificacion]);
 
     res.json({ mensaje: 'Estado del usuario actualizado exitosamente' });
   } catch (error) {
