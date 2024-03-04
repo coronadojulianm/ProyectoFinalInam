@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 13-02-2024 a las 13:03:53
+-- Tiempo de generación: 03-03-2024 a las 19:00:08
 -- Versión del servidor: 8.0.30
 -- Versión de PHP: 8.1.10
 
@@ -24,132 +24,178 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `ambientes`
+--
+
+CREATE TABLE `ambientes` (
+  `id_ambiente` int NOT NULL,
+  `nombre_ambiente` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `estado_ambiente` enum('libre','ocupado','inaccesible') COLLATE utf8mb4_general_ci NOT NULL,
+  `fk_area` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ambientes`
+--
+
+INSERT INTO `ambientes` (`id_ambiente`, `nombre_ambiente`, `estado_ambiente`, `fk_area`) VALUES
+(1, 'Y12', 'libre', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `areas`
+--
+
+CREATE TABLE `areas` (
+  `id_area` int NOT NULL,
+  `nombre_area` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `estado` enum('ocupado','libre','inaccesible','') COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `areas`
+--
+
+INSERT INTO `areas` (`id_area`, `nombre_area`, `estado`) VALUES
+(1, 'Tics', 'libre');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `elementos`
 --
 
 CREATE TABLE `elementos` (
-  `id_elemento` int NOT NULL,
-  `tipo_elemento` enum('electronico','didactico','mueble','utiles') NOT NULL,
-  `estado` enum('funcional','reparacion','dañado','') NOT NULL,
-  `fecha_ingreso` date NOT NULL
+  `id_elementos` int NOT NULL,
+  `codigo_sena` int NOT NULL,
+  `estado` enum('dañado','reparacion','funcional','') COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre_elemento` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `tipo_elemento` enum('tecnologia','mobiliario','material didactico','suministros') COLLATE utf8mb4_general_ci NOT NULL,
+  `nota_cambio` text COLLATE utf8mb4_general_ci,
+  `cambios` enum('si') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `fk_ambiente` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `elementos`
+--
+
+INSERT INTO `elementos` (`id_elementos`, `codigo_sena`, `estado`, `nombre_elemento`, `tipo_elemento`, `nota_cambio`, `cambios`, `fk_ambiente`) VALUES
+(1, 12312321, 'dañado', 'PC_HP', 'tecnologia', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `inventario`
+-- Estructura de tabla para la tabla `novedad`
 --
 
-CREATE TABLE `inventario` (
-  `id_inventario` int NOT NULL,
-  `nombre_inv` varchar(60) NOT NULL,
-  `fecha_creacion` date NOT NULL,
-  `fk_id_elementos` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `novedades`
---
-
-CREATE TABLE `novedades` (
+CREATE TABLE `novedad` (
   `id_novedad` int NOT NULL,
-  `fecha_nov` date NOT NULL,
-  `fk_id_usuario` int NOT NULL,
-  `novedad` text NOT NULL,
-  `tipo_nov` enum('daño','perdida','fallas','') NOT NULL,
-  `fk_prestamo` int NOT NULL
+  `tipo_novedad` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion_novedad` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `responsable_registro` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
+  `fecha_novedad` date NOT NULL,
+  `fk_id_prestamo` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `novedad`
+--
+
+INSERT INTO `novedad` (`id_novedad`, `tipo_novedad`, `descripcion_novedad`, `responsable_registro`, `fecha_novedad`, `fk_id_prestamo`) VALUES
+(3, 'Daño PC Registro 1 actualizado', 'La pantalla no enciende (prueba) ', 'carlos cela', '2024-02-01', 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `prestamos`
+-- Estructura de tabla para la tabla `prestamo`
 --
 
-CREATE TABLE `prestamos` (
+CREATE TABLE `prestamo` (
   `id_prestamo` int NOT NULL,
-  `estado` enum('disponible','ocupado','inaccesible','') NOT NULL,
-  `fecha_pres` date NOT NULL,
-  `fk_sitio` int NOT NULL,
-  `fk_usuario` int NOT NULL
+  `nombre_ambiente` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `fecha_prestamo` date NOT NULL,
+  `fecha_entrega` date NOT NULL,
+  `nombre_celador` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `observaciones` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `fk_usuario` int NOT NULL,
+  `fk_ambiente` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `prestamo`
+--
+
+INSERT INTO `prestamo` (`id_prestamo`, `nombre_ambiente`, `fecha_prestamo`, `fecha_entrega`, `nombre_celador`, `observaciones`, `fk_usuario`, `fk_ambiente`) VALUES
+(1, 'Y12', '2024-03-05', '2024-03-04', 'carlos', 'ninguna', 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `sitios`
+-- Estructura de tabla para la tabla `usuario`
 --
 
-CREATE TABLE `sitios` (
-  `id_sitio` int NOT NULL,
-  `nombre_sitio` varchar(60) NOT NULL,
-  `tipo_sitio` enum('ambiente','biblioteca','auditorio','agronegocios') NOT NULL,
-  `fk_id_inventario` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuarios`
---
-
-CREATE TABLE `usuarios` (
+CREATE TABLE `usuario` (
   `id_usuario` int NOT NULL,
-  `tipo_usuario` enum('administrador','celador','instructor','') NOT NULL,
-  `nombre` varchar(60) NOT NULL,
-  `correo` varchar(60) NOT NULL,
-  `telefono` varchar(20) NOT NULL,
-  `identificacion_dni` varchar(20) NOT NULL,
-  `contraseña` varchar(50) NOT NULL,
-  `estado_usuario` enum('activo','inactivo') NOT NULL
+  `identificacion` int NOT NULL,
+  `telefono` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `correo` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `contraseña` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `tipo_usuario` enum('celador','administrador','instructor') COLLATE utf8mb4_general_ci NOT NULL,
+  `estado_usuario` enum('activo','inactivo') COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`id_usuario`, `identificacion`, `telefono`, `correo`, `contraseña`, `tipo_usuario`, `estado_usuario`) VALUES
+(1, 1117486332, '321412312123', 'julian@gmail.com', '123', 'celador', 'activo');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
+-- Indices de la tabla `ambientes`
+--
+ALTER TABLE `ambientes`
+  ADD PRIMARY KEY (`id_ambiente`),
+  ADD KEY `fk_area` (`fk_area`);
+
+--
+-- Indices de la tabla `areas`
+--
+ALTER TABLE `areas`
+  ADD PRIMARY KEY (`id_area`);
+
+--
 -- Indices de la tabla `elementos`
 --
 ALTER TABLE `elementos`
-  ADD PRIMARY KEY (`id_elemento`);
+  ADD PRIMARY KEY (`id_elementos`),
+  ADD KEY `fk_ambiente` (`fk_ambiente`);
 
 --
--- Indices de la tabla `inventario`
+-- Indices de la tabla `novedad`
 --
-ALTER TABLE `inventario`
-  ADD PRIMARY KEY (`id_inventario`),
-  ADD UNIQUE KEY `fk_id_elementos` (`fk_id_elementos`);
-
---
--- Indices de la tabla `novedades`
---
-ALTER TABLE `novedades`
+ALTER TABLE `novedad`
   ADD PRIMARY KEY (`id_novedad`),
-  ADD UNIQUE KEY `fk_id_usuario` (`fk_id_usuario`),
-  ADD UNIQUE KEY `fk_prestamo` (`fk_prestamo`);
+  ADD KEY `fk_id_prestamo` (`fk_id_prestamo`);
 
 --
--- Indices de la tabla `prestamos`
+-- Indices de la tabla `prestamo`
 --
-ALTER TABLE `prestamos`
+ALTER TABLE `prestamo`
   ADD PRIMARY KEY (`id_prestamo`),
-  ADD UNIQUE KEY `fk_sitio` (`fk_sitio`),
-  ADD UNIQUE KEY `fk_usuario` (`fk_usuario`);
+  ADD KEY `prestamo_ibfk_1` (`fk_usuario`),
+  ADD KEY `fk_ambiente` (`fk_ambiente`);
 
 --
--- Indices de la tabla `sitios`
+-- Indices de la tabla `usuario`
 --
-ALTER TABLE `sitios`
-  ADD PRIMARY KEY (`id_sitio`),
-  ADD UNIQUE KEY `fk_id_inventario` (`fk_id_inventario`);
-
---
--- Indices de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
+ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id_usuario`);
 
 --
@@ -157,39 +203,39 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `ambientes`
+--
+ALTER TABLE `ambientes`
+  MODIFY `id_ambiente` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `areas`
+--
+ALTER TABLE `areas`
+  MODIFY `id_area` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT de la tabla `elementos`
 --
 ALTER TABLE `elementos`
-  MODIFY `id_elemento` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_elementos` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `inventario`
+-- AUTO_INCREMENT de la tabla `novedad`
 --
-ALTER TABLE `inventario`
-  MODIFY `id_inventario` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `novedad`
+  MODIFY `id_novedad` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT de la tabla `novedades`
+-- AUTO_INCREMENT de la tabla `prestamo`
 --
-ALTER TABLE `novedades`
-  MODIFY `id_novedad` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `prestamo`
+  MODIFY `id_prestamo` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de la tabla `prestamos`
+-- AUTO_INCREMENT de la tabla `usuario`
 --
-ALTER TABLE `prestamos`
-  MODIFY `id_prestamo` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `sitios`
---
-ALTER TABLE `sitios`
-  MODIFY `id_sitio` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `usuarios`
---
-ALTER TABLE `usuarios`
+ALTER TABLE `usuario`
   MODIFY `id_usuario` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -197,30 +243,29 @@ ALTER TABLE `usuarios`
 --
 
 --
--- Filtros para la tabla `inventario`
+-- Filtros para la tabla `ambientes`
 --
-ALTER TABLE `inventario`
-  ADD CONSTRAINT `inventario_ibfk_1` FOREIGN KEY (`fk_id_elementos`) REFERENCES `elementos` (`id_elemento`);
+ALTER TABLE `ambientes`
+  ADD CONSTRAINT `ambientes_ibfk_2` FOREIGN KEY (`fk_area`) REFERENCES `areas` (`id_area`);
 
 --
--- Filtros para la tabla `novedades`
+-- Filtros para la tabla `elementos`
 --
-ALTER TABLE `novedades`
-  ADD CONSTRAINT `novedades_ibfk_1` FOREIGN KEY (`fk_id_usuario`) REFERENCES `usuarios` (`id_usuario`);
+ALTER TABLE `elementos`
+  ADD CONSTRAINT `elementos_ibfk_1` FOREIGN KEY (`fk_ambiente`) REFERENCES `ambientes` (`id_ambiente`);
 
 --
--- Filtros para la tabla `prestamos`
+-- Filtros para la tabla `novedad`
 --
-ALTER TABLE `prestamos`
-  ADD CONSTRAINT `prestamos_ibfk_1` FOREIGN KEY (`id_prestamo`) REFERENCES `novedades` (`fk_prestamo`),
-  ADD CONSTRAINT `prestamos_ibfk_2` FOREIGN KEY (`fk_usuario`) REFERENCES `usuarios` (`id_usuario`),
-  ADD CONSTRAINT `prestamos_ibfk_3` FOREIGN KEY (`fk_sitio`) REFERENCES `sitios` (`id_sitio`);
+ALTER TABLE `novedad`
+  ADD CONSTRAINT `novedad_ibfk_1` FOREIGN KEY (`fk_id_prestamo`) REFERENCES `prestamo` (`id_prestamo`);
 
 --
--- Filtros para la tabla `sitios`
+-- Filtros para la tabla `prestamo`
 --
-ALTER TABLE `sitios`
-  ADD CONSTRAINT `sitios_ibfk_1` FOREIGN KEY (`fk_id_inventario`) REFERENCES `inventario` (`id_inventario`);
+ALTER TABLE `prestamo`
+  ADD CONSTRAINT `prestamo_ibfk_1` FOREIGN KEY (`fk_usuario`) REFERENCES `usuario` (`id_usuario`),
+  ADD CONSTRAINT `prestamo_ibfk_2` FOREIGN KEY (`fk_ambiente`) REFERENCES `ambientes` (`id_ambiente`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,4 +1,5 @@
 import {pool} from '../database/conexion.js';
+import jwt from 'jsonwebtoken';
 
 // Obtener todos los usuarios
 export const obtenerUsuarios = async (req, res) => {
@@ -92,15 +93,16 @@ export const eliminarUsuario = async (req, res) => {
 };
 
 // Validar credenciales del usuario
- export const validarCredenciales = async (req, res) => {
+export const validarCredenciales = async (req, res) => {
   const { identificacion, contraseña } = req.body;
 
   try {
     const [rows] = await pool.query('SELECT * FROM usuarios WHERE identificacion_dni = ? AND contraseña = ?', [identificacion, contraseña]);
 
     if (rows.length > 0) {
-      // Credenciales válidas
-      res.json({ mensaje: 'Sesión iniciada' });
+      // Credenciales válidas, generar token JWT
+      const token = jwt.sign({ userId: rows[0].id }, 'secreto'); // Reemplaza 'secreto' con tu clave secreta
+      res.json({ token });
     } else {
       // Credenciales inválidas
       res.status(401).json({ mensaje: 'Credenciales inválidas' });
